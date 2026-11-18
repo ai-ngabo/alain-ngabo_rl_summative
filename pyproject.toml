@@ -1,0 +1,23 @@
+[project]
+name = "alain-ngabo_lr_summative"
+version = "0.1.0"
+description = "Ibaba Life-saver: reinforcement learning (DQN, REINFORCE, PPO, A2C with TorchRL) for blood-delivery drones in Rwanda"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.110",
+    "gymnasium>=1.0",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.5",
+    "pandas>=3.1.1",
+    "pillow>=13.0.0",
+    "tensordict>=0.15.2",
+    "torch>=2.11",
+    "torchrl>=0.15",
+    "uvicorn[standard]>=0.29",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
