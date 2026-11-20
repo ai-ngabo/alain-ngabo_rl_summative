@@ -1,8 +1,29 @@
-"""Static map of the Ibaba Life-saver world: Kigali hub, rural hospitals, airport, lakes, terrain.
+"""
+Static world definition for the Ibaba Life-Saver Environment.
 
-Coordinates are kilometres on a flat local grid centred on the drone hub:
-x points east, y points north. Positions come from approximate public map
-coordinates (latitude/longitude) converted with an equirectangular projection.
+This module defines the geographic and environmental features used by the
+simulation, including:
+
+- The Kigali drone hub (mission origin).
+- District and provincial hospitals used as delivery destinations.
+- Kigali International Airport and its no-fly zone.
+- Lake Muhazi, the Nyabarongo River, and major terrain landmarks.
+- A deterministic terrain model inspired by Rwanda's hilly landscape.
+- Settlements, roads, and visual landmarks used for rendering.
+
+Coordinates are expressed in kilometres on a local Cartesian grid centred
+on the Kigali hub, where:
+
+- x increases towards the east.
+- y increases towards the north.
+
+Hospital locations are based on approximate public geographic coordinates
+(latitude and longitude) converted to local kilometre coordinates using an
+equirectangular projection.
+
+The world is deterministic and shared across episodes, ensuring that agents
+encounter the same geography while still experiencing varying weather,
+battery, and mission conditions.
 """
 
 from __future__ import annotations
@@ -12,7 +33,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-# Drone hub in Kigali # my design choice
+# Kigali drone hub (simulation origin and mission base).
+# The location was chosen as a modelling design decision.
 HUB_LAT, HUB_LON = -1.9540, 30.0870
 KM_PER_DEG_LAT = 110.57
 KM_PER_DEG_LON = 111.32 * math.cos(math.radians(HUB_LAT))
@@ -32,14 +54,15 @@ class Hospital:
     district: str
     lat: float
     lon: float
-    split: str  # "train" or "test" (held out for generalization)
+    split: str  # "train" or "test"; test hospitals are held out for generalization evaluation.
 
     @property
     def xy(self) -> tuple[float, float]:
         return latlon_to_km(self.lat, self.lon)
 
 
-# countryside hospitals, approximate locations.
+# District and provincial hospitals used as delivery destinations.
+# Coordinates are approximate real-world locations.
 HOSPITALS: tuple[Hospital, ...] = (
     Hospital("Rutongo District Hospital", "Rulindo", -1.8270, 30.0530, "train"),
     Hospital("Nyamata District Hospital", "Bugesera", -2.1490, 30.0930, "train"),
@@ -65,13 +88,13 @@ LAKE_LEVEL_M = 1443.0
 SHORE_WIDTH_KM = 6.0
 AIRPORT_LEVEL_M = 1490.0
 
-# Nyabarongo river (visual).
+# Nyabarongo River (visual landmark used for rendering).
 NYABARONGO = [latlon_to_km(lat, lon) for lat, lon in (
     (-2.060, 29.780), (-2.010, 29.900), (-1.985, 29.990), (-2.000, 30.040),
     (-2.030, 30.090), (-2.070, 30.160), (-2.110, 30.230),
 )]
 
-# Named hills around Kigali (visual landmarks and real relief).
+# Prominent hills around Kigali used as visual landmarks and terrain features.
 NAMED_HILLS = (
     ("Mount Kigali", latlon_to_km(-1.9770, 30.0330), 330.0, 2.2),
     ("Mount Jali", latlon_to_km(-1.8920, 30.0870), 380.0, 2.6),
@@ -85,10 +108,20 @@ def _smoothstep(t):
 
 
 class Terrain:
-    """Smooth hilly heightfield (metres above sea level).
+    """
+    Procedurally generated terrain model (metres above sea level).
 
-    Sum of a regional trend and Gaussian hills with a fixed seed, so the map is the
-    same in every episode. Slopes stay below ~9% so a climbing drone can clear them.
+    The terrain combines a large-scale elevation trend with a collection of
+    Gaussian hills generated from a fixed random seed, producing a deterministic
+    representation of Rwanda's rolling landscape. Additional shaping is applied
+    around Lake Muhazi and Kigali International Airport to create realistic
+    water and plateau regions.
+
+    Because the same seed is used for every episode, the terrain remains
+    identical across runs, allowing consistent benchmarking and evaluation.
+
+    Slopes are intentionally constrained so that the drone can safely traverse
+    the environment while still requiring terrain-aware navigation.
     """
 
     def __init__(self, seed: int = 2026, n_hills: int = 150):
@@ -189,14 +222,24 @@ _TERRAIN_CACHE: dict[int, Terrain] = {}
 
 
 def get_terrain(seed: int = 2026) -> Terrain:
-    """One shared terrain per process (building the grid takes ~1 s)."""
+    """
+    Return a shared terrain instance.
+
+    The terrain grid is cached because its construction is relatively
+    expensive and the same terrain is used throughout all episodes.
+    """
     if seed not in _TERRAIN_CACHE:
         _TERRAIN_CACHE[seed] = Terrain(seed)
     return _TERRAIN_CACHE[seed]
 
 
 def scene_description(terrain: Terrain) -> dict:
-    """Everything static the viewer needs to draw the map."""
+    """
+    Return all static world information required by the viewer.
+
+    Includes terrain, hospitals, landmarks, airspace constraints,
+    water bodies, and map boundaries.
+    """
     return {
         "bounds": BOUNDS,
         "terrain": terrain.params(),
@@ -214,7 +257,7 @@ def scene_description(terrain: Terrain) -> dict:
     }
 
 
-# settlements and roads (visual)
+# Settlements, roads, and landmarks used for visual rendering.
 # Built-up areas of Kigali (centre, radius km): Kimihurura/KCC, CBD (Nyarugenge), Nyamirambo,
 # Remera, Kicukiro, Gisozi, Kacyiru, Kimironko, Gikondo.
 KIGALI_AREAS = [
@@ -251,7 +294,9 @@ def settlements(seed: int = 7) -> dict:
         villages.append({"xy": [round(x, 3), round(y, 3)], "r": round(float(rng.uniform(0.4, 0.9)), 3),
                          "n": int(rng.integers(8, 26))})
     towns = [{"xy": list(h.xy), "r": 1.6, "n": 70} for h in HOSPITALS]
-    # main roads: hub -> each hospital town, gently wiggling
+    # Main roads connecting the hub to hospital towns.
+    # Slight perturbations are added to avoid perfectly straight paths.
+
     roads = []
     for h in HOSPITALS:
         p0, p1 = np.zeros(2), np.array(h.xy)
@@ -262,7 +307,7 @@ def settlements(seed: int = 7) -> dict:
         wig -= np.linspace(wig[0], wig[-1], n)
         pts = p0[None] + t[:, None] * (p1 - p0)[None] + wig[:, None] * normal[None]
         roads.append({"kind": "highway", "pts": pts.round(3).tolist()})
-    # red-earth tracks between neighbouring villages
+    # Secondary tracks connecting neighbouring villages.
     vxy = np.array([v["xy"] for v in villages])
     for i, p in enumerate(vxy):
         d = np.hypot(*(vxy - p).T)
