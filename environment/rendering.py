@@ -1,12 +1,28 @@
-"""Rendering for Ibaba Life-saver.
+"""
+Rendering and visualization utilities for the Ibaba Life-Saver Environment.
 
-* `LiveViewer` - a small FastAPI server that serves the three.js 3D viewer (assets/viewer)
-  and streams every environment step to the browser over a WebSocket. The same server
-  exposes `POST /api/act` (observation in, action out): the integration path a dispatch
-  dashboard or mobile app would use.
-* `build_terrain_texture` - paints the Rwandan landscape (fields, terraces, tea, roads,
-  Lake Muhazi, Kigali, the airport) into one image used by the 3D terrain.
-* `topdown_rgb` - a 2D top-down picture of an episode (Gymnasium "rgb_array" mode).
+This module provides three complementary visualization systems:
+
+1. LiveViewer
+   A lightweight FastAPI-based dashboard that serves an interactive
+   three.js 3D viewer and streams environment state updates through
+   a WebSocket connection. The same server also exposes an inference
+   endpoint (`POST /api/act`) that allows external applications to
+   request actions from a trained policy.
+
+2. build_terrain_texture
+   Generates a high-resolution terrain texture representing the
+   simulated Rwandan landscape, including agricultural areas,
+   tea plantations, roads, settlements, Kigali urban regions,
+   Lake Muhazi, the airport, and terrain shading.
+
+3. topdown_rgb
+   Produces a 2D bird's-eye visualization of an episode for use in
+   Gymnasium's `rgb_array` rendering mode, debugging, evaluation,
+   and demonstrations.
+
+Rendering is purely observational and has no effect on environment
+dynamics, rewards, observations, or episode outcomes.
 """
 
 from __future__ import annotations
@@ -33,7 +49,7 @@ VIEWER_DIR = ROOT / "assets" / "viewer"
 TEXTURE_PATH = VIEWER_DIR / "terrain_texture.jpg"
 
 
-# terrain texture
+# Terrain-texture generation utilities.
 def _hex(c: str) -> np.ndarray:
     return np.array([int(c[i:i + 2], 16) for i in (1, 3, 5)], dtype=np.float32)
 
@@ -55,6 +71,16 @@ def _value_noise(shape, cells, rng):
 
 
 def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: int = 11) -> Path:
+    """
+    Generate a high-resolution terrain texture for the 3D viewer.
+
+    The texture combines terrain elevation, agricultural plots,
+    tea plantations, forests, roads, settlements, rivers, urban
+    areas, airport infrastructure, and hill shading to create a
+    visually realistic representation of the simulation world.
+
+    The generated image is cached on disk and reused by the viewer.
+    """
     from PIL import Image, ImageDraw, ImageFilter
 
     rng = np.random.default_rng(seed)
@@ -211,9 +237,23 @@ def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: in
     return path
 
 
-# 2D top-down image
+# 2D top-down visualization.
 def topdown_rgb(env, size: int = 900) -> np.ndarray:
-    """Top-down map of the current episode as an RGB array."""
+    """
+    Render the current episode as a top-down RGB image.
+
+    The visualization shows:
+
+    - The drone trajectory.
+    - Waypoints and corridor rings.
+    - Rain cells.
+    - Hospital locations.
+    - Airport no-fly zone.
+    - The current drone position.
+    - The Kigali hub.
+
+    Used for Gymnasium's `rgb_array` render mode.
+    """
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -253,14 +293,29 @@ def topdown_rgb(env, size: int = 900) -> np.ndarray:
     return img
 
 
-# live 3D viewer
+# Interactive 3D viewer and policy-serving API.
 class ActRequest(BaseModel):
-    """Body of POST /api/act: the 27 observation values in environment order."""
+    """
+    Request body for the policy-inference API.
+
+    The observation field contains the full 27-dimensional observation
+    vector in the same order defined by the environment.
+    """
+
     observation: list[float]
 
 
 class LiveViewer:
-    """Serves the three.js viewer and streams frames to every connected browser."""
+    """
+    Interactive visualization server.
+
+    The viewer hosts a three.js application that displays the terrain,
+    weather, airspace, mission waypoints, and drone state in real time.
+
+    Environment frames are streamed to connected clients through a
+    WebSocket connection. Optionally, a trained policy can be attached
+    to the server and queried through the REST API for action selection.
+    """
 
     def __init__(self, host: str = "127.0.0.1", port: int = 8765, policy=None):
         import uvicorn
