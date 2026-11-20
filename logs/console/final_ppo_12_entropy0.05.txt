@@ -1,0 +1,45 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (1000000) is not exactly divisible by frames_per_batch (2048). This means 1472 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[ppo:final_ppo_12_entropy0.05] frames=  26624 eps=  146 eval_return= -105.4 success=0.00
+[ppo:final_ppo_12_entropy0.05] frames=  51200 eps=  281 eval_return=  154.8 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames=  75776 eps=  442 eval_return=   26.7 success=0.30
+[ppo:final_ppo_12_entropy0.05] frames= 100352 eps=  610 eval_return=  179.4 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 126976 eps=  800 eval_return=   68.9 success=0.30
+[ppo:final_ppo_12_entropy0.05] frames= 151552 eps=  985 eval_return=   94.6 success=0.50
+[ppo:final_ppo_12_entropy0.05] frames= 176128 eps= 1160 eval_return=  152.5 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 200704 eps= 1347 eval_return=  186.1 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 225280 eps= 1527 eval_return=  147.7 success=0.60
+[ppo:final_ppo_12_entropy0.05] frames= 251904 eps= 1722 eval_return=  213.9 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 276480 eps= 1905 eval_return=  221.5 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 301056 eps= 2113 eval_return=  164.7 success=0.50
+[ppo:final_ppo_12_entropy0.05] frames= 325632 eps= 2328 eval_return=  186.5 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 350208 eps= 2526 eval_return=  210.9 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 376832 eps= 2748 eval_return=  162.5 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 401408 eps= 2949 eval_return=  138.3 success=0.50
+[ppo:final_ppo_12_entropy0.05] frames= 425984 eps= 3143 eval_return=  195.4 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 450560 eps= 3338 eval_return=  239.8 success=0.90
+[ppo:final_ppo_12_entropy0.05] frames= 475136 eps= 3540 eval_return=  187.9 success=0.60
+[ppo:final_ppo_12_entropy0.05] frames= 501760 eps= 3754 eval_return=  198.5 success=0.60
+[ppo:final_ppo_12_entropy0.05] frames= 526336 eps= 3958 eval_return=  185.1 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 550912 eps= 4155 eval_return=  213.0 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 575488 eps= 4349 eval_return=  198.6 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 600064 eps= 4560 eval_return=  170.1 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 626688 eps= 4779 eval_return=  229.5 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 651264 eps= 4970 eval_return=  232.4 success=0.90
+[ppo:final_ppo_12_entropy0.05] frames= 675840 eps= 5169 eval_return=  221.9 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 700416 eps= 5375 eval_return=  193.3 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 727040 eps= 5600 eval_return=  224.5 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 751616 eps= 5796 eval_return=  230.7 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 776192 eps= 5995 eval_return=  174.3 success=0.50
+[ppo:final_ppo_12_entropy0.05] frames= 800768 eps= 6196 eval_return=  211.4 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 825344 eps= 6399 eval_return=  233.9 success=0.90
+[ppo:final_ppo_12_entropy0.05] frames= 851968 eps= 6637 eval_return=  244.4 success=0.90
+[ppo:final_ppo_12_entropy0.05] frames= 876544 eps= 6832 eval_return=  262.2 success=1.00
+[ppo:final_ppo_12_entropy0.05] frames= 901120 eps= 7030 eval_return=  223.5 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 925696 eps= 7237 eval_return=  224.7 success=0.80
+[ppo:final_ppo_12_entropy0.05] frames= 950272 eps= 7427 eval_return=  202.8 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames= 976896 eps= 7640 eval_return=  217.8 success=0.70
+[ppo:final_ppo_12_entropy0.05] frames=1001472 eps= 7842 eval_return=  223.4 success=0.80
+[ppo:final_ppo_12_entropy0.05] FINAL train=249.6 (success 1.00)  held-out=224.9 (success 0.83)  -> final_ppo_12_entropy0.05.json

@@ -1,0 +1,46 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1300: UserWarning: init_random_frames (5000) is not exactly a multiple of frames_per_batch (64),  this results in more init_random_frames than requested (5056).To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[92m2026-11-20 02:51:43,866 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([100000]) shape[92m [END][0m
+[dqn:final_dqn_08_eps_slow200k] frames=  25024 eps=  199 epsilon=0.89 eval_return= -108.3 success=0.00
+[dqn:final_dqn_08_eps_slow200k] frames=  50048 eps=  374 epsilon=0.78 eval_return=   32.1 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames=  75008 eps=  563 epsilon=0.66 eval_return=  -43.0 success=0.20
+[dqn:final_dqn_08_eps_slow200k] frames= 100032 eps=  776 epsilon=0.55 eval_return=   20.6 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 125056 eps= 1004 epsilon=0.44 eval_return=   -2.9 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 150016 eps= 1255 epsilon=0.33 eval_return=   29.5 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 175040 eps= 1519 epsilon=0.22 eval_return=  -10.6 success=0.20
+[dqn:final_dqn_08_eps_slow200k] frames= 200000 eps= 1783 epsilon=0.10 eval_return=   47.3 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 225024 eps= 2039 epsilon=0.10 eval_return=   56.2 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 250048 eps= 2302 epsilon=0.10 eval_return=  124.1 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 275008 eps= 2563 epsilon=0.10 eval_return=   73.1 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 300032 eps= 2840 epsilon=0.10 eval_return=  122.4 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 325056 eps= 3096 epsilon=0.10 eval_return=  118.6 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 350016 eps= 3360 epsilon=0.10 eval_return=  135.4 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 375040 eps= 3616 epsilon=0.10 eval_return=  151.6 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 400000 eps= 3866 epsilon=0.10 eval_return=   99.5 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 425024 eps= 4107 epsilon=0.10 eval_return=  111.4 success=0.50
+[dqn:final_dqn_08_eps_slow200k] frames= 450048 eps= 4364 epsilon=0.10 eval_return=  144.0 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 475008 eps= 4598 epsilon=0.10 eval_return=  107.1 success=0.20
+[dqn:final_dqn_08_eps_slow200k] frames= 500032 eps= 4845 epsilon=0.10 eval_return=  156.8 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 525056 eps= 5070 epsilon=0.10 eval_return=  137.7 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 550016 eps= 5303 epsilon=0.10 eval_return=  151.1 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 575040 eps= 5526 epsilon=0.10 eval_return=  130.2 success=0.50
+[dqn:final_dqn_08_eps_slow200k] frames= 600000 eps= 5764 epsilon=0.10 eval_return=  135.8 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 625024 eps= 5990 epsilon=0.10 eval_return=  180.9 success=0.60
+[dqn:final_dqn_08_eps_slow200k] frames= 650048 eps= 6230 epsilon=0.10 eval_return=  141.1 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 675008 eps= 6458 epsilon=0.10 eval_return=  146.5 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 700032 eps= 6671 epsilon=0.10 eval_return=  133.1 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 725056 eps= 6894 epsilon=0.10 eval_return=   82.3 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 750016 eps= 7113 epsilon=0.10 eval_return=  147.6 success=0.40
+[dqn:final_dqn_08_eps_slow200k] frames= 775040 eps= 7339 epsilon=0.10 eval_return=  172.7 success=0.50
+[dqn:final_dqn_08_eps_slow200k] frames= 800000 eps= 7565 epsilon=0.10 eval_return=  190.7 success=0.70
+[dqn:final_dqn_08_eps_slow200k] frames= 825024 eps= 7794 epsilon=0.10 eval_return=  180.1 success=0.60
+[dqn:final_dqn_08_eps_slow200k] frames= 850048 eps= 8012 epsilon=0.10 eval_return=  184.1 success=0.60
+[dqn:final_dqn_08_eps_slow200k] frames= 875008 eps= 8241 epsilon=0.10 eval_return=  159.7 success=0.50
+[dqn:final_dqn_08_eps_slow200k] frames= 900032 eps= 8456 epsilon=0.10 eval_return=  209.6 success=0.70
+[dqn:final_dqn_08_eps_slow200k] frames= 925056 eps= 8668 epsilon=0.10 eval_return=  171.2 success=0.50
+[dqn:final_dqn_08_eps_slow200k] frames= 950016 eps= 8891 epsilon=0.10 eval_return=  102.9 success=0.30
+[dqn:final_dqn_08_eps_slow200k] frames= 975040 eps= 9107 epsilon=0.10 eval_return=  163.3 success=0.50
+[dqn:final_dqn_08_eps_slow200k] frames=1000000 eps= 9317 epsilon=0.10 eval_return=  188.6 success=0.60
+[dqn:final_dqn_08_eps_slow200k] FINAL train=215.8 (success 0.70)  held-out=200.1 (success 0.63)  -> final_dqn_08_eps_slow200k.json

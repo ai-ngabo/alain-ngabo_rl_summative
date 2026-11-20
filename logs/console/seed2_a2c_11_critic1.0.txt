@@ -1,0 +1,15 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (250000) is not exactly divisible by frames_per_batch (128). This means 112 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[a2c:seed2_a2c_11_critic1.0] frames=  25088 eps=  123 eval_return=  -72.4 success=0.00
+[a2c:seed2_a2c_11_critic1.0] frames=  50048 eps=  299 eval_return=  138.5 success=0.90
+[a2c:seed2_a2c_11_critic1.0] frames=  75008 eps=  512 eval_return=   74.6 success=0.50
+[a2c:seed2_a2c_11_critic1.0] frames= 100096 eps=  748 eval_return=   61.3 success=0.30
+[a2c:seed2_a2c_11_critic1.0] frames= 125056 eps= 1017 eval_return=  101.3 success=0.40
+[a2c:seed2_a2c_11_critic1.0] frames= 150016 eps= 1282 eval_return=  104.7 success=0.30
+[a2c:seed2_a2c_11_critic1.0] frames= 175104 eps= 1588 eval_return=   88.6 success=0.30
+[a2c:seed2_a2c_11_critic1.0] frames= 200064 eps= 1882 eval_return=   92.9 success=0.30
+[a2c:seed2_a2c_11_critic1.0] frames= 225024 eps= 2125 eval_return=  102.6 success=0.40
+[a2c:seed2_a2c_11_critic1.0] frames= 250112 eps= 2387 eval_return=   88.5 success=0.40
+[a2c:seed2_a2c_11_critic1.0] FINAL train=150.7 (success 0.93)  held-out=138.0 (success 0.80)  -> seed2_a2c_11_critic1.0.json

@@ -1,0 +1,15 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (250000) is not exactly divisible by frames_per_batch (2048). This means 1904 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[ppo:ppo_01_baseline] frames=  26624 eps=  140 eval_return=  -35.7 success=0.00
+[ppo:ppo_01_baseline] frames=  51200 eps=  254 eval_return=  102.2 success=0.50
+[ppo:ppo_01_baseline] frames=  75776 eps=  391 eval_return=  156.8 success=0.70
+[ppo:ppo_01_baseline] frames= 100352 eps=  576 eval_return=   74.8 success=0.60
+[ppo:ppo_01_baseline] frames= 126976 eps=  798 eval_return=  117.9 success=0.60
+[ppo:ppo_01_baseline] frames= 151552 eps= 1006 eval_return=  139.2 success=0.50
+[ppo:ppo_01_baseline] frames= 176128 eps= 1220 eval_return=  125.5 success=0.50
+[ppo:ppo_01_baseline] frames= 200704 eps= 1446 eval_return=  126.6 success=0.50
+[ppo:ppo_01_baseline] frames= 225280 eps= 1647 eval_return=  148.3 success=0.60
+[ppo:ppo_01_baseline] frames= 251904 eps= 1864 eval_return=  179.0 success=0.70
+[ppo:ppo_01_baseline] FINAL train=185.4 (success 0.70)  held-out=196.3 (success 0.73)  -> ppo_01_baseline.json

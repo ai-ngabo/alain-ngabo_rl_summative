@@ -1,0 +1,45 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (1000000) is not exactly divisible by frames_per_batch (128). This means 64 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[a2c:final_a2c_11_critic1.0] frames=  25088 eps=  144 eval_return=  -48.9 success=0.00
+[a2c:final_a2c_11_critic1.0] frames=  50048 eps=  249 eval_return=  -34.6 success=0.00
+[a2c:final_a2c_11_critic1.0] frames=  75008 eps=  384 eval_return=  152.3 success=0.60
+[a2c:final_a2c_11_critic1.0] frames= 100096 eps=  598 eval_return=  174.3 success=0.80
+[a2c:final_a2c_11_critic1.0] frames= 125056 eps=  848 eval_return=  166.6 success=0.70
+[a2c:final_a2c_11_critic1.0] frames= 150016 eps= 1132 eval_return=   71.1 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 175104 eps= 1421 eval_return=   72.4 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 200064 eps= 1697 eval_return=   98.4 success=0.50
+[a2c:final_a2c_11_critic1.0] frames= 225024 eps= 1944 eval_return=   59.9 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 250112 eps= 2225 eval_return=   71.7 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 275072 eps= 2501 eval_return=   81.1 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 300032 eps= 2733 eval_return=  137.0 success=0.60
+[a2c:final_a2c_11_critic1.0] frames= 325120 eps= 2965 eval_return=  100.5 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 350080 eps= 3190 eval_return=  124.3 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 375040 eps= 3417 eval_return=  136.1 success=0.50
+[a2c:final_a2c_11_critic1.0] frames= 400000 eps= 3680 eval_return=  111.5 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 425088 eps= 3916 eval_return=   99.2 success=0.50
+[a2c:final_a2c_11_critic1.0] frames= 450048 eps= 4159 eval_return=   67.2 success=0.20
+[a2c:final_a2c_11_critic1.0] frames= 475008 eps= 4453 eval_return=   82.8 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 500096 eps= 4692 eval_return=   79.8 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 525056 eps= 4958 eval_return=   66.0 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 550016 eps= 5224 eval_return=  102.9 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 575104 eps= 5475 eval_return=  110.7 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 600064 eps= 5703 eval_return=   84.1 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 625024 eps= 5956 eval_return=  107.4 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 650112 eps= 6201 eval_return=   87.1 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 675072 eps= 6440 eval_return=  104.5 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 700032 eps= 6691 eval_return=   84.6 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 725120 eps= 6908 eval_return=  101.7 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 750080 eps= 7166 eval_return=  106.4 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 775040 eps= 7399 eval_return=  115.3 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 800000 eps= 7633 eval_return=   99.3 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 825088 eps= 7859 eval_return=  140.4 success=0.50
+[a2c:final_a2c_11_critic1.0] frames= 850048 eps= 8112 eval_return=   97.4 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 875008 eps= 8348 eval_return=  132.6 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 900096 eps= 8625 eval_return=  125.9 success=0.30
+[a2c:final_a2c_11_critic1.0] frames= 925056 eps= 8891 eval_return=  122.9 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 950016 eps= 9143 eval_return=  142.9 success=0.40
+[a2c:final_a2c_11_critic1.0] frames= 975104 eps= 9392 eval_return=  128.5 success=0.40
+[a2c:final_a2c_11_critic1.0] frames=1000064 eps= 9634 eval_return=  147.8 success=0.50
+[a2c:final_a2c_11_critic1.0] FINAL train=193.4 (success 0.93)  held-out=172.8 (success 0.70)  -> final_a2c_11_critic1.0.json

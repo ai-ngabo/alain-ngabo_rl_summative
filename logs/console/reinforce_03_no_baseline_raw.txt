@@ -1,0 +1,15 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (250000) is not exactly divisible by frames_per_batch (1200). This means 800 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[reinforce:reinforce_03_no_baseline_raw] frames=  25200 eps=  145 eval_return= -139.6 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames=  50400 eps=  258 eval_return= -148.9 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames=  75600 eps=  363 eval_return= -141.1 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames= 100800 eps=  457 eval_return= -128.1 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames= 126000 eps=  559 eval_return= -138.4 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames= 150000 eps=  654 eval_return= -131.3 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames= 175200 eps=  753 eval_return= -130.2 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames= 200400 eps=  849 eval_return= -151.3 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames= 225600 eps=  941 eval_return= -124.0 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] frames= 250800 eps= 1027 eval_return= -122.8 success=0.00
+[reinforce:reinforce_03_no_baseline_raw] FINAL train=-80.5 (success 0.00)  held-out=-87.4 (success 0.00)  -> reinforce_03_no_baseline_raw.json

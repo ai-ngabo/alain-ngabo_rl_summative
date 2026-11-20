@@ -1,0 +1,18 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (250000) is not exactly divisible by frames_per_batch (64). This means 48 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1300: UserWarning: init_random_frames (5000) is not exactly a multiple of frames_per_batch (64),  this results in more init_random_frames than requested (5056).To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[92m2026-11-19 21:35:01,560 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([100000]) shape[92m [END][0m
+[dqn:dqn_05_batch32] frames=  25024 eps=  182 epsilon=0.76 eval_return= -124.2 success=0.00
+[dqn:dqn_05_batch32] frames=  50048 eps=  334 epsilon=0.53 eval_return=   -2.9 success=0.50
+[dqn:dqn_05_batch32] frames=  75008 eps=  504 epsilon=0.29 eval_return=  -29.7 success=0.20
+[dqn:dqn_05_batch32] frames= 100032 eps=  736 epsilon=0.05 eval_return=   16.7 success=0.40
+[dqn:dqn_05_batch32] frames= 125056 eps= 1001 epsilon=0.05 eval_return=   15.1 success=0.30
+[dqn:dqn_05_batch32] frames= 150016 eps= 1255 epsilon=0.05 eval_return=  -22.9 success=0.20
+[dqn:dqn_05_batch32] frames= 175040 eps= 1539 epsilon=0.05 eval_return=   11.3 success=0.30
+[dqn:dqn_05_batch32] frames= 200000 eps= 1828 epsilon=0.05 eval_return=   26.1 success=0.30
+[dqn:dqn_05_batch32] frames= 225024 eps= 2095 epsilon=0.05 eval_return=  -17.5 success=0.30
+[dqn:dqn_05_batch32] frames= 250048 eps= 2364 epsilon=0.05 eval_return=    4.2 success=0.40
+[dqn:dqn_05_batch32] FINAL train=62.3 (success 0.50)  held-out=49.0 (success 0.43)  -> dqn_05_batch32.json
