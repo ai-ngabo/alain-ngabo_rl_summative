@@ -1,4 +1,19 @@
-"""Shared helpers for all four agents: TorchRL env wrapping, networks, evaluation, logging."""
+"""
+Shared infrastructure used by all reinforcement-learning agents.
+
+Provides:
+
+    • Reproducibility utilities
+    • TorchRL environment wrappers
+    • Neural-network builders
+    • Policy evaluation
+    • Experiment logging
+    • Policy persistence (save/load)
+
+This module is intentionally algorithm-agnostic so that DQN,
+REINFORCE, PPO, and A2C share the same evaluation protocol,
+logging format, and model serialization process.
+"""
 
 from __future__ import annotations
 
@@ -13,148 +28,496 @@ import numpy as np
 import torch
 from tensordict.nn import TensorDictModule
 from torch import nn
-from torchrl.envs import GymWrapper, RewardSum, SerialEnv, TransformedEnv
+from torchrl.envs import (
+    GymWrapper,
+    RewardSum,
+    SerialEnv,
+    TransformedEnv,
+)
 
-from environment import ACTIONS, OBS_DIM, IbabaDroneEnv
+from environment import (
+    ACTIONS,
+    OBS_DIM,
+    IbabaDroneEnv,
+)
 
-ROOT = Path(__file__).resolve().parent.parent
-LOG_DIR = ROOT / "logs"
-MODEL_DIR = ROOT / "models"
+# Project paths
+# ---------------------------------------------------------------------
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+LOG_DIR = ROOT_DIR / "logs"
+MODEL_DIR = ROOT_DIR / "models"
+
 N_ACTIONS = len(ACTIONS)
 
-# Fixed evaluation missions so every run is scored on exactly the same cases.
-EVAL_SEEDS_TRAIN = list(range(10_000, 10_030))   # 30 missions to training hospitals
-EVAL_SEEDS_TEST = list(range(20_000, 20_030))    # 30 missions to held-out hospitals
-PROGRESS_SEEDS = list(range(30_000, 30_010))     # quick checks during training
 
+# Fixed evaluation missions
+# ---------------------------------------------------------------------
+
+# Every experiment is evaluated on the same missions to ensure
+# fair comparisons across algorithms and hyperparameter settings.
+
+EVAL_SEEDS_TRAIN = list(range(10_000, 10_030))
+EVAL_SEEDS_TEST = list(range(20_000, 20_030))
+PROGRESS_SEEDS = list(range(30_000, 30_010))
+
+# Reproducibility
+# ---------------------------------------------------------------------
 
 def set_seed(seed: int) -> None:
+    """Set seeds for Python, NumPy, and PyTorch."""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
 
+# Environment creation
+# ---------------------------------------------------------------------
 
-def make_env(num_envs: int = 4, seed: int = 0, split: str = "train"):
-    """TorchRL view of the Gymnasium environment (integer actions, episode reward tracking)."""
+def make_env(
+    num_envs: int = 4,
+    seed: int = 0,
+    split: str = "train",
+):
+    """
+    Create a TorchRL-compatible environment.
 
-    def _one():
+    Supports either a single environment or a batch of environments.
+    Episode rewards are tracked automatically through RewardSum.
+    """
+
+    def build_single_env():
         return TransformedEnv(
-            GymWrapper(IbabaDroneEnv(hospital_split=split), categorical_action_encoding=True),
+            GymWrapper(
+                IbabaDroneEnv(
+                    hospital_split=split,
+                ),
+                categorical_action_encoding=True,
+            ),
             RewardSum(),
         )
 
-    env = SerialEnv(num_envs, _one) if num_envs > 1 else _one()
+    env = (
+        SerialEnv(num_envs, build_single_env)
+        if num_envs > 1
+        else build_single_env()
+    )
+
     env.set_seed(seed)
+
     return env
 
+# Neural networks
+# ---------------------------------------------------------------------
 
-def mlp(in_dim: int, out_dim: int, hidden: tuple[int, ...], act=nn.Tanh) -> nn.Sequential:
-    layers, d = [], in_dim
-    for h in hidden:
-        layers += [nn.Linear(d, h), act()]
-        d = h
-    layers.append(nn.Linear(d, out_dim))
+def mlp(
+    input_dim: int,
+    output_dim: int,
+    hidden_sizes: tuple[int, ...],
+    activation=nn.Tanh,
+) -> nn.Sequential:
+    """
+    Build a fully connected MLP.
+    """
+
+    layers = []
+    current_dim = input_dim
+
+    for hidden_size in hidden_sizes:
+        layers.extend(
+            [
+                nn.Linear(current_dim, hidden_size),
+                activation(),
+            ]
+        )
+        current_dim = hidden_size
+
+    layers.append(
+        nn.Linear(current_dim, output_dim)
+    )
+
     return nn.Sequential(*layers)
 
 
-def logits_module(hidden=(128, 128)) -> TensorDictModule:
-    return TensorDictModule(mlp(OBS_DIM, N_ACTIONS, hidden), in_keys=["observation"], out_keys=["logits"])
+def logits_module(
+    hidden_sizes: tuple[int, ...] = (128, 128),
+) -> TensorDictModule:
+    """
+    TorchRL module producing action logits.
+    """
 
+    return TensorDictModule(
+        mlp(
+            OBS_DIM,
+            N_ACTIONS,
+            hidden_sizes,
+        ),
+        in_keys=["observation"],
+        out_keys=["logits"],
+    )
+
+# Evaluation
+# ---------------------------------------------------------------------
 
 @torch.no_grad()
-def evaluate(net: nn.Module, seeds: list[int], split: str, greedy: bool = True) -> dict:
-    """Run full missions with the raw Gymnasium env. `net` maps observation -> logits/Q-values."""
+def evaluate(
+    net: nn.Module,
+    seeds: list[int],
+    split: str,
+    greedy: bool = True,
+) -> dict:
+    """
+    Evaluate a policy on a fixed set of missions.
+
+    The raw Gymnasium environment is used rather than TorchRL
+    wrappers so that all algorithms are measured under identical
+    deployment conditions.
+
+    Returns aggregate mission statistics used throughout training
+    and analysis.
+    """
+
     env = IbabaDroneEnv(hospital_split=split)
-    rows = []
-    for s in seeds:
-        obs, _ = env.reset(seed=s)
+
+    mission_results = []
+
+    for seed in seeds:
+
+        observation, _ = env.reset(seed=seed)
+
         done = False
+
         while not done:
-            out = net(torch.as_tensor(obs).unsqueeze(0))
+
+            action_scores = net(
+                torch.as_tensor(observation).unsqueeze(0)
+            )
+
             if greedy:
-                a = int(out.argmax(-1))
+                action = int(action_scores.argmax(-1))
             else:
-                a = int(torch.distributions.Categorical(logits=out).sample())
-            obs, _, term, trunc, info = env.step(a)
-            done = term or trunc
-        rows.append(info)
-    returns = [r["total_reward"] for r in rows]
-    delivered = [r for r in rows if r["delivered"]]
+                action = int(
+                    torch.distributions.Categorical(
+                        logits=action_scores
+                    ).sample()
+                )
+
+            observation, _, terminated, truncated, info = env.step(
+                action
+            )
+
+            done = terminated or truncated
+
+        mission_results.append(info)
+
+    returns = [
+        result["total_reward"]
+        for result in mission_results
+    ]
+
+    successful_deliveries = [
+        result
+        for result in mission_results
+        if result["delivered"]
+    ]
+
     return {
         "mean_return": float(np.mean(returns)),
         "std_return": float(np.std(returns)),
-        "success_rate": float(np.mean([r["outcome"] == "home" for r in rows])),
-        "delivery_rate": float(np.mean([r["delivered"] for r in rows])),
-        "on_target_rate": float(np.mean([r["drop_result"] == "on_target" for r in rows])),
-        "crash_rate": float(np.mean([r["outcome"] in ("crash", "no_fly", "out_of_bounds") for r in rows])),
-        "battery_fail_rate": float(np.mean([r["outcome"] == "battery" for r in rows])),
-        "timeout_rate": float(np.mean([r["outcome"] == "timeout" for r in rows])),
-        "mean_delivery_min": float(np.mean([r["delivery_minutes"] for r in delivered])) if delivered else None,
-        "mean_steps": float(np.mean([r["steps"] for r in rows])),
-        "returns": [round(x, 2) for x in returns],
+        "success_rate": float(
+            np.mean(
+                [
+                    result["outcome"] == "home"
+                    for result in mission_results
+                ]
+            )
+        ),
+        "delivery_rate": float(
+            np.mean(
+                [
+                    result["delivered"]
+                    for result in mission_results
+                ]
+            )
+        ),
+        "on_target_rate": float(
+            np.mean(
+                [
+                    result["drop_result"] == "on_target"
+                    for result in mission_results
+                ]
+            )
+        ),
+        "crash_rate": float(
+            np.mean(
+                [
+                    result["outcome"]
+                    in (
+                        "crash",
+                        "no_fly",
+                        "out_of_bounds",
+                    )
+                    for result in mission_results
+                ]
+            )
+        ),
+        "battery_fail_rate": float(
+            np.mean(
+                [
+                    result["outcome"] == "battery"
+                    for result in mission_results
+                ]
+            )
+        ),
+        "timeout_rate": float(
+            np.mean(
+                [
+                    result["outcome"] == "timeout"
+                    for result in mission_results
+                ]
+            )
+        ),
+        "mean_delivery_min": (
+            float(
+                np.mean(
+                    [
+                        result["delivery_minutes"]
+                        for result in successful_deliveries
+                    ]
+                )
+            )
+            if successful_deliveries
+            else None
+        ),
+        "mean_steps": float(
+            np.mean(
+                [
+                    result["steps"]
+                    for result in mission_results
+                ]
+            )
+        ),
+        "returns": [
+            round(value, 2)
+            for value in returns
+        ],
     }
 
+# Run logging
+# ---------------------------------------------------------------------
 
 class RunLogger:
-    """Collects everything a run produces and writes one JSON file per run."""
+    """
+    Collect all information generated during training and
+    export it as a single JSON run log.
+    """
 
-    def __init__(self, algo: str, run_name: str, config: dict):
-        self.algo, self.run_name, self.config = algo, run_name, config
-        self.t0 = time.time()
-        self.episodes: list[list[float]] = []   # [frames, episode_return]
-        self.updates: list[dict] = []           # loss / entropy per update
-        self.progress: list[dict] = []          # periodic greedy evaluation
+    def __init__(
+        self,
+        algo: str,
+        run_name: str,
+        config: dict,
+    ):
+        self.algo = algo
+        self.run_name = run_name
+        self.config = config
 
-    def add_episodes(self, frames: int, returns) -> None:
-        for r in returns:
-            self.episodes.append([int(frames), round(float(r), 3)])
+        self.start_time = time.time()
 
-    def add_update(self, frames: int, **values) -> None:
-        row = {"frames": int(frames)}
-        row.update({k: (None if v is None or (isinstance(v, float) and math.isnan(v)) else round(float(v), 5))
-                    for k, v in values.items()})
-        self.updates.append(row)
+        self.episodes: list[list[float]] = []
+        self.updates: list[dict] = []
+        self.progress: list[dict] = []
 
-    def add_progress(self, frames: int, result: dict) -> None:
-        self.progress.append({"frames": int(frames), "episodes": len(self.episodes),
-                              "mean_return": round(result["mean_return"], 2),
-                              "success_rate": result["success_rate"]})
+    def add_episodes(
+        self,
+        frames: int,
+        returns,
+    ) -> None:
 
-    def save(self, final_train: dict, final_test: dict, model_path: str) -> Path:
-        out = {
-            "algo": self.algo, "run": self.run_name, "config": self.config,
-            "wall_seconds": round(time.time() - self.t0, 1),
-            "episodes": self.episodes, "updates": self.updates, "progress": self.progress,
-            "final_eval_train": final_train, "final_eval_test": final_test,
+        for episode_return in returns:
+            self.episodes.append(
+                [
+                    int(frames),
+                    round(float(episode_return), 3),
+                ]
+            )
+
+    def add_update(
+        self,
+        frames: int,
+        **values,
+    ) -> None:
+
+        update_row = {
+            "frames": int(frames)
+        }
+
+        update_row.update(
+            {
+                key: (
+                    None
+                    if (
+                        value is None
+                        or (
+                            isinstance(value, float)
+                            and math.isnan(value)
+                        )
+                    )
+                    else round(float(value), 5)
+                )
+                for key, value in values.items()
+            }
+        )
+
+        self.updates.append(update_row)
+
+    def add_progress(
+        self,
+        frames: int,
+        result: dict,
+    ) -> None:
+
+        self.progress.append(
+            {
+                "frames": int(frames),
+                "episodes": len(self.episodes),
+                "mean_return": round(
+                    result["mean_return"],
+                    2,
+                ),
+                "success_rate": result["success_rate"],
+            }
+        )
+
+    def save(
+        self,
+        final_train: dict,
+        final_test: dict,
+        model_path: str,
+    ) -> Path:
+
+        output = {
+            "algo": self.algo,
+            "run": self.run_name,
+            "config": self.config,
+            "wall_seconds": round(
+                time.time() - self.start_time,
+                1,
+            ),
+            "episodes": self.episodes,
+            "updates": self.updates,
+            "progress": self.progress,
+            "final_eval_train": final_train,
+            "final_eval_test": final_test,
             "model_path": model_path,
         }
-        path = LOG_DIR / self.algo / f"{self.run_name}.json"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(out))
-        return path
 
+        log_path = (
+            LOG_DIR
+            / self.algo
+            / f"{self.run_name}.json"
+        )
+
+        log_path.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        log_path.write_text(
+            json.dumps(output)
+        )
+
+        return log_path
+
+# Episode statistics
+# ---------------------------------------------------------------------
 
 def finished_episode_returns(data) -> list[float]:
-    """Episode returns that ended inside a collected batch (via RewardSum)."""
+    """
+    Extract completed episode returns from a TorchRL batch.
+    """
+    
     done = data["next", "done"].squeeze(-1)
+
     if done.any():
-        return data["next", "episode_reward"].squeeze(-1)[done].tolist()
+        return (
+            data["next", "episode_reward"]
+            .squeeze(-1)[done]
+            .tolist()
+        )
+
     return []
 
+# Model persistence
+# ---------------------------------------------------------------------
 
-def save_policy(net: nn.Module, algo: str, run_name: str, config: dict, sub: str) -> str:
-    """Serialize the policy network: weights + JSON config (the integration path)."""
-    d = MODEL_DIR / sub
-    d.mkdir(parents=True, exist_ok=True)
-    path = d / f"{run_name}.pt"
-    torch.save({"algo": algo, "state_dict": net.state_dict(), "hidden": config.get("hidden", [128, 128]),
-                "obs_dim": OBS_DIM, "actions": list(ACTIONS), "config": config}, path)
-    return str(path.relative_to(ROOT))
+def save_policy(
+    net: nn.Module,
+    algo: str,
+    run_name: str,
+    config: dict,
+    subdirectory: str,
+) -> str:
+    """
+    Save a trained policy checkpoint.
+    """
+
+    model_directory = MODEL_DIR / subdirectory
+
+    model_directory.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    model_path = (
+        model_directory
+        / f"{run_name}.pt"
+    )
+
+    torch.save(
+        {
+            "algo": algo,
+            "state_dict": net.state_dict(),
+            "hidden": config.get(
+                "hidden",
+                [128, 128],
+            ),
+            "obs_dim": OBS_DIM,
+            "actions": list(ACTIONS),
+            "config": config,
+        },
+        model_path,
+    )
+
+    return str(
+        model_path.relative_to(ROOT_DIR)
+    )
 
 
-def load_policy(path: str | os.PathLike) -> tuple[nn.Module, dict]:
-    ckpt = torch.load(Path(path) if Path(path).is_absolute() else ROOT / path, map_location="cpu", weights_only=False)
-    net = mlp(ckpt["obs_dim"], len(ckpt["actions"]), tuple(ckpt["hidden"]))
-    net.load_state_dict(ckpt["state_dict"])
+def load_policy(
+    path: str | os.PathLike,
+) -> tuple[nn.Module, dict]:
+    """
+    Load a previously saved policy network.
+    """
+
+    checkpoint = torch.load(
+        Path(path)
+        if Path(path).is_absolute()
+        else ROOT_DIR / path,
+        map_location="cpu",
+        weights_only=False,
+    )
+
+    net = mlp(
+        checkpoint["obs_dim"],
+        len(checkpoint["actions"]),
+        tuple(checkpoint["hidden"]),
+    )
+
+    net.load_state_dict(
+        checkpoint["state_dict"]
+    )
+
     net.eval()
-    return net, ckpt
+
+    return net, checkpoint
