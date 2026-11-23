@@ -1,0 +1,114 @@
+{
+  "dqn": {
+    "config_run": "dqn_08_eps_slow200k",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "train_returns": [
+      173.4,
+      160.9,
+      151.0
+    ],
+    "train_success": [
+      0.6,
+      0.5666666666666667,
+      0.5666666666666667
+    ],
+    "unseen_returns": [
+      147.5,
+      137.1,
+      116.4
+    ],
+    "episodes_to_converge": [
+      1949,
+      1816,
+      1737
+    ]
+  },
+  "reinforce": {
+    "config_run": "reinforce_06_gamma0.95",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "train_returns": [
+      142.4,
+      129.8,
+      94.1
+    ],
+    "train_success": [
+      0.6666666666666666,
+      0.6,
+      0.5
+    ],
+    "unseen_returns": [
+      122.7,
+      92.2,
+      79.4
+    ],
+    "episodes_to_converge": [
+      585,
+      524,
+      1364
+    ]
+  },
+  "ppo": {
+    "config_run": "ppo_12_entropy0.05",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "train_returns": [
+      229.3,
+      189.5,
+      215.0
+    ],
+    "train_success": [
+      0.9333333333333333,
+      0.8,
+      0.9333333333333333
+    ],
+    "unseen_returns": [
+      205.3,
+      180.8,
+      196.4
+    ],
+    "episodes_to_converge": [
+      1175,
+      1094,
+      971
+    ]
+  },
+  "a2c": {
+    "config_run": "a2c_11_critic1.0",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "train_returns": [
+      193.4,
+      141.1,
+      150.7
+    ],
+    "train_success": [
+      0.9333333333333333,
+      0.6333333333333333,
+      0.9333333333333333
+    ],
+    "unseen_returns": [
+      172.8,
+      132.9,
+      138.0
+    ],
+    "episodes_to_converge": [
+      931,
+      727,
+      1041
+    ]
+  }
+}

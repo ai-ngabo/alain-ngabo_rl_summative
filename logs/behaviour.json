@@ -1,0 +1,77 @@
+{
+  "heuristic": {
+    "speed_share_with_blood": [
+      0.137,
+      0.863,
+      0.0
+    ],
+    "speed_share_returning": [
+      0.103,
+      0.897,
+      0.0
+    ],
+    "rain_step_share": 0.1159,
+    "mean_delivery_min": 19.7,
+    "mean_battery_left_home": 0.331
+  },
+  "dqn": {
+    "speed_share_with_blood": [
+      0.086,
+      0.066,
+      0.847
+    ],
+    "speed_share_returning": [
+      0.495,
+      0.136,
+      0.369
+    ],
+    "rain_step_share": 0.0702,
+    "mean_delivery_min": 15.0,
+    "mean_battery_left_home": 0.298
+  },
+  "reinforce": {
+    "speed_share_with_blood": [
+      0.0,
+      0.873,
+      0.127
+    ],
+    "speed_share_returning": [
+      0.476,
+      0.433,
+      0.091
+    ],
+    "rain_step_share": 0.106,
+    "mean_delivery_min": 17.8,
+    "mean_battery_left_home": 0.312
+  },
+  "ppo": {
+    "speed_share_with_blood": [
+      0.131,
+      0.624,
+      0.245
+    ],
+    "speed_share_returning": [
+      0.714,
+      0.261,
+      0.025
+    ],
+    "rain_step_share": 0.0845,
+    "mean_delivery_min": 18.0,
+    "mean_battery_left_home": 0.295
+  },
+  "a2c": {
+    "speed_share_with_blood": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "speed_share_returning": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "rain_step_share": 0.1042,
+    "mean_delivery_min": 20.4,
+    "mean_battery_left_home": 0.298
+  }
+}
