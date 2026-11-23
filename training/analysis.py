@@ -301,7 +301,7 @@ def figures(all_runs: dict, best: dict, base: dict) -> None:
     plt.close(fig)
 
     # 5) sweep overview
-    fig, axes = plt.subplots(1, 4, figsize=(13, 3.2), sharey=True)
+    fig, axes = plt.subplots(1, 4, figsize=(13, 3.2))  # own run labels on every panel
     for ax, algo in zip(axes, ALGOS):
         runs = all_runs[algo]
         vals = [r["final_eval_train"]["mean_return"] for r in runs]
@@ -352,7 +352,7 @@ def main():
     # overall best: average of training-hospital and unseen-mission reward (the demo includes an unseen hospital)
     overall = max(ALGOS, key=lambda a: best[a]["final_eval_train"]["mean_return"] + best[a]["final_eval_test"]["mean_return"])
     index = {"overall": overall, "algorithms": {
-        a: {"run": best[a]["run"], "model_path": best[a]["model_path"],
+        a: {"run": best[a]["run"], "model_path": best[a]["model_path"].replace("\\", "/"),
             "frames": best[a]["config"]["total_frames"],
             "train_mean_reward": best[a]["final_eval_train"]["mean_return"],
             "train_success": best[a]["final_eval_train"]["success_rate"],
