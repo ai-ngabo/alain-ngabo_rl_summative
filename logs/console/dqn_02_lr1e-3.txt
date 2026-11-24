@@ -1,0 +1,18 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (250000) is not exactly divisible by frames_per_batch (64). This means 48 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1300: UserWarning: init_random_frames (5000) is not exactly a multiple of frames_per_batch (64),  this results in more init_random_frames than requested (5056).To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[92m2026-11-19 21:00:45,213 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([100000]) shape[92m [END][0m
+[dqn:dqn_02_lr1e-3] frames=  25024 eps=  177 epsilon=0.76 eval_return=  -95.2 success=0.00
+[dqn:dqn_02_lr1e-3] frames=  50048 eps=  350 epsilon=0.53 eval_return= -173.5 success=0.10
+[dqn:dqn_02_lr1e-3] frames=  75008 eps=  574 epsilon=0.29 eval_return=  -27.5 success=0.20
+[dqn:dqn_02_lr1e-3] frames= 100032 eps=  849 epsilon=0.05 eval_return=  -28.8 success=0.20
+[dqn:dqn_02_lr1e-3] frames= 125056 eps= 1154 epsilon=0.05 eval_return=   23.3 success=0.30
+[dqn:dqn_02_lr1e-3] frames= 150016 eps= 1390 epsilon=0.05 eval_return=    9.4 success=0.30
+[dqn:dqn_02_lr1e-3] frames= 175040 eps= 1637 epsilon=0.05 eval_return=   48.9 success=0.20
+[dqn:dqn_02_lr1e-3] frames= 200000 eps= 1887 epsilon=0.05 eval_return=   71.5 success=0.30
+[dqn:dqn_02_lr1e-3] frames= 225024 eps= 2132 epsilon=0.05 eval_return=   56.6 success=0.20
+[dqn:dqn_02_lr1e-3] frames= 250048 eps= 2400 epsilon=0.05 eval_return=   86.8 success=0.40
+[dqn:dqn_02_lr1e-3] FINAL train=149.5 (success 0.57)  held-out=118.9 (success 0.40)  -> dqn_02_lr1e-3.json

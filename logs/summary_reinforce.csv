@@ -1,0 +1,13 @@
+Run,Learning rate,Gamma,Baseline,Advantage norm,Entropy coef,Episodes/update,Network,Mean reward,Success %,On-target %,Unseen reward,Unseen success %,Last-100 train reward,Episodes to converge,Train episodes,Minutes
+reinforce_01_baseline,0.003,0.99,True,meanstd,0.01,4,128x128,75.2,40,57,45.3,27,75.1,797,1001,7.9
+reinforce_02_no_baseline,0.003,0.99,False,std,0.01,4,128x128,-134.5,0,0,-129.6,0,-138.6,1334,1549,7.5
+reinforce_03_no_baseline_raw,0.003,0.99,False,none,0.01,4,128x128,-80.5,0,0,-87.4,0,-80.9,673,1027,7.8
+reinforce_04_lr1e-3,0.001,0.99,True,meanstd,0.01,4,128x128,17.9,13,3,31.5,17,75.0,779,986,8.4
+reinforce_05_lr1e-2,0.01,0.99,True,meanstd,0.01,4,128x128,-145.8,0,0,-141.1,0,-134.0,52,1416,7.1
+reinforce_06_gamma0.95,0.003,0.95,True,meanstd,0.01,4,128x128,142.4,67,37,122.7,53,105.1,585,1653,7.5
+reinforce_07_gamma0.999,0.003,0.999,True,meanstd,0.01,4,128x128,-79.1,0,0,-78.5,0,-88.2,845,4271,8.9
+reinforce_08_entropy0,0.003,0.99,True,meanstd,0,4,128x128,-29.8,0,0,-16.4,0,-52.5,536,899,7.5
+reinforce_09_entropy0.05,0.003,0.99,True,meanstd,0.05,4,128x128,94.8,73,27,57.6,70,-19.0,302,1121,7.6
+reinforce_10_8eps_batch,0.003,0.99,True,meanstd,0.01,8,128x128,126.7,77,27,64.1,47,81.6,726,985,7.2
+reinforce_11_2eps_batch,0.003,0.99,True,meanstd,0.01,2,128x128,33.3,17,3,15.1,10,-16.8,131,960,9.7
+reinforce_12_net64,0.003,0.99,True,meanstd,0.01,4,64x64,34.3,50,3,23.5,47,86.6,564,1055,7.2

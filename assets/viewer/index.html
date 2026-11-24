@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ibaba Life-saver · Blood delivery drone simulation (Rwanda)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div id="flash"></div>
+
+<section id="hud" class="panel">
+  <div class="brand"><span class="dot"></span>IBABA LIFE-SAVER</div>
+  <div class="sub">Blood-delivery drone · Rwanda · reinforcement learning</div>
+  <div class="mission">
+    <div class="from">Kigali Drone Hub →</div>
+    <div id="m-hospital" class="to">waiting for mission…</div>
+    <div id="m-meta" class="meta"></div>
+  </div>
+  <div class="grid">
+    <div class="k">Agent</div><div id="m-agent" class="v">–</div>
+    <div class="k">Phase</div><div id="m-phase" class="v">–</div>
+    <div class="k">Flight time</div><div id="m-time" class="v">–</div>
+  </div>
+  <div class="gauge">
+    <div class="g-label"><span>Battery</span><span id="g-batt-v">–</span></div>
+    <div class="bar"><div id="g-batt" class="fill"></div></div>
+  </div>
+  <div class="gauge">
+    <div class="g-label"><span>Blood box temperature (limit 10 °C)</span><span id="g-temp-v">–</span></div>
+    <div class="bar"><div id="g-temp" class="fill temp"></div></div>
+  </div>
+  <div class="tiles">
+    <div class="tile"><div class="tk">Speed</div><div id="t-speed" class="tv">–</div></div>
+    <div class="tile"><div class="tk">Height above ground</div><div id="t-agl" class="tv">–</div></div>
+    <div class="tile"><div class="tk">Wind</div><div class="tv"><span id="t-wind-arrow" class="arrow">↑</span><span id="t-wind">–</span></div></div>
+    <div class="tile"><div class="tk">Payload</div><div id="t-payload" class="tv">–</div></div>
+  </div>
+</section>
+
+<section id="actionbar" class="panel">
+  <div class="ab-col"><div class="ab-k">Action</div><div id="a-action" class="ab-action">–</div></div>
+  <div class="ab-col"><div class="ab-k">Step reward</div><div id="a-reward" class="ab-num">–</div></div>
+  <div class="ab-col"><div class="ab-k">Total reward</div><div id="a-total" class="ab-num">–</div></div>
+  <div class="ab-col"><div class="ab-k">Step</div><div id="a-step" class="ab-num">–</div></div>
+</section>
+
+<section id="events" class="panel">
+  <div class="ev-title">Rewards and penalties</div>
+  <ul id="ev-list"></ul>
+</section>
+
+<section id="minimap-wrap" class="panel">
+  <canvas id="minimap" width="330" height="260"></canvas>
+  <div class="mm-legend">
+    <span><i class="sw ring"></i>corridor ring</span><span><i class="sw rain"></i>rain</span>
+    <span><i class="sw nofly"></i>no-fly zone</span><span><i class="sw hosp"></i>target</span>
+  </div>
+</section>
+
+<div id="toast"></div>
+<div id="camera-buttons">
+  <button data-cam="chase" class="on">Chase</button>
+  <button data-cam="orbit">Orbit</button>
+  <button data-cam="overview">Overview</button>
+</div>
+<div id="status">connecting…</div>
+<div id="summary" class="panel hidden"></div>
+<div id="loading"><div class="ld-title">IBABA LIFE-SAVER</div><div class="ld-sub">Building Rwanda…</div></div>
+
+<script type="module" src="viewer.js"></script>
+</body>
+</html>

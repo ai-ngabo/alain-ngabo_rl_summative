@@ -1,0 +1,45 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (1000000) is not exactly divisible by frames_per_batch (1200). This means 800 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[reinforce:final_reinforce_06_gamma0.95] frames=  25200 eps=  103 eval_return=  -51.6 success=0.00
+[reinforce:final_reinforce_06_gamma0.95] frames=  50400 eps=  191 eval_return=  -53.1 success=0.00
+[reinforce:final_reinforce_06_gamma0.95] frames=  75600 eps=  295 eval_return=  -18.9 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 100800 eps=  467 eval_return=  -30.1 success=0.20
+[reinforce:final_reinforce_06_gamma0.95] frames= 126000 eps=  584 eval_return=   87.4 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 150000 eps=  702 eval_return=   72.1 success=0.50
+[reinforce:final_reinforce_06_gamma0.95] frames= 175200 eps=  919 eval_return=    2.7 success=0.20
+[reinforce:final_reinforce_06_gamma0.95] frames= 200400 eps= 1170 eval_return=   64.7 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 225600 eps= 1433 eval_return=   61.5 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 250800 eps= 1653 eval_return=   91.7 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 276000 eps= 1899 eval_return=   87.4 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 300000 eps= 2120 eval_return=   84.5 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 325200 eps= 2314 eval_return=   91.3 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 350400 eps= 2508 eval_return=   87.1 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 375600 eps= 2728 eval_return=   88.3 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 400800 eps= 2987 eval_return=   70.8 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 426000 eps= 3232 eval_return=  116.2 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 450000 eps= 3422 eval_return=  164.1 success=0.70
+[reinforce:final_reinforce_06_gamma0.95] frames= 475200 eps= 3614 eval_return=  142.4 success=0.50
+[reinforce:final_reinforce_06_gamma0.95] frames= 500400 eps= 3825 eval_return=   96.3 success=0.50
+[reinforce:final_reinforce_06_gamma0.95] frames= 525600 eps= 4051 eval_return=   46.2 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 550800 eps= 4232 eval_return=   85.1 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 576000 eps= 4479 eval_return=   66.1 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 600000 eps= 4688 eval_return=   47.0 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 625200 eps= 4864 eval_return=  100.0 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 650400 eps= 5074 eval_return=  113.7 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 675600 eps= 5283 eval_return=   96.5 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 700800 eps= 5475 eval_return=   84.7 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 726000 eps= 5601 eval_return=  -62.4 success=0.10
+[reinforce:final_reinforce_06_gamma0.95] frames= 750000 eps= 5735 eval_return=  138.2 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 775200 eps= 5969 eval_return=   84.6 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 800400 eps= 6229 eval_return=  129.5 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 825600 eps= 6427 eval_return=  133.3 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] frames= 850800 eps= 6623 eval_return=   99.9 success=0.50
+[reinforce:final_reinforce_06_gamma0.95] frames= 876000 eps= 6803 eval_return=  111.2 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 900000 eps= 7007 eval_return=  121.6 success=0.50
+[reinforce:final_reinforce_06_gamma0.95] frames= 925200 eps= 7173 eval_return=  135.5 success=0.50
+[reinforce:final_reinforce_06_gamma0.95] frames= 950400 eps= 7364 eval_return=   71.2 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames= 975600 eps= 7617 eval_return=   61.0 success=0.30
+[reinforce:final_reinforce_06_gamma0.95] frames=1000800 eps= 7865 eval_return=   92.8 success=0.40
+[reinforce:final_reinforce_06_gamma0.95] FINAL train=194.8 (success 0.93)  held-out=203.8 (success 0.83)  -> final_reinforce_06_gamma0.95.json

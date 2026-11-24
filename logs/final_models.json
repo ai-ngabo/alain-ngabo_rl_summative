@@ -1,0 +1,130 @@
+[
+  {
+    "algo": "DQN",
+    "run": "final_dqn_08_eps_slow200k",
+    "frames": 1000000,
+    "episodes": 9317,
+    "episodes_to_converge": 3398,
+    "train": {
+      "mean_return": 215.80977601906275,
+      "std_return": 88.25193340266792,
+      "success_rate": 0.7,
+      "delivery_rate": 1.0,
+      "on_target_rate": 0.9666666666666667,
+      "crash_rate": 0.0,
+      "battery_fail_rate": 0.3,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 15.044444444444444,
+      "mean_steps": 106.83333333333333
+    },
+    "unseen": {
+      "mean_return": 200.0792534403996,
+      "std_return": 99.46217159821303,
+      "success_rate": 0.6333333333333333,
+      "delivery_rate": 0.9666666666666667,
+      "on_target_rate": 0.9333333333333333,
+      "crash_rate": 0.0,
+      "battery_fail_rate": 0.36666666666666664,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 18.091954022988503,
+      "mean_steps": 117.5
+    },
+    "wall_minutes": 40.2
+  },
+  {
+    "algo": "REINFORCE",
+    "run": "final_reinforce_06_gamma0.95",
+    "frames": 1000000,
+    "episodes": 7865,
+    "episodes_to_converge": 599,
+    "train": {
+      "mean_return": 194.83136450843807,
+      "std_return": 67.299357413866,
+      "success_rate": 0.9333333333333333,
+      "delivery_rate": 1.0,
+      "on_target_rate": 0.3333333333333333,
+      "crash_rate": 0.0,
+      "battery_fail_rate": 0.06666666666666667,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 17.788888888888888,
+      "mean_steps": 123.93333333333334
+    },
+    "unseen": {
+      "mean_return": 203.78794153557638,
+      "std_return": 86.68021938547336,
+      "success_rate": 0.8333333333333334,
+      "delivery_rate": 0.9666666666666667,
+      "on_target_rate": 0.6666666666666666,
+      "crash_rate": 0.0,
+      "battery_fail_rate": 0.16666666666666666,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 21.73563218390805,
+      "mean_steps": 147.63333333333333
+    },
+    "wall_minutes": 31.5
+  },
+  {
+    "algo": "PPO",
+    "run": "final_ppo_12_entropy0.05",
+    "frames": 1000000,
+    "episodes": 7842,
+    "episodes_to_converge": 1443,
+    "train": {
+      "mean_return": 249.57371426788256,
+      "std_return": 43.354423382418844,
+      "success_rate": 1.0,
+      "delivery_rate": 1.0,
+      "on_target_rate": 0.7666666666666667,
+      "crash_rate": 0.0,
+      "battery_fail_rate": 0.0,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 18.0,
+      "mean_steps": 135.23333333333332
+    },
+    "unseen": {
+      "mean_return": 224.87070448348678,
+      "std_return": 75.61070453586827,
+      "success_rate": 0.8333333333333334,
+      "delivery_rate": 1.0,
+      "on_target_rate": 0.8,
+      "crash_rate": 0.0,
+      "battery_fail_rate": 0.16666666666666666,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 22.177777777777788,
+      "mean_steps": 155.76666666666668
+    },
+    "wall_minutes": 30.7
+  },
+  {
+    "algo": "A2C",
+    "run": "final_a2c_11_critic1.0",
+    "frames": 1000000,
+    "episodes": 9634,
+    "episodes_to_converge": 2666,
+    "train": {
+      "mean_return": 193.41467490047145,
+      "std_return": 52.641688898274936,
+      "success_rate": 0.9333333333333333,
+      "delivery_rate": 1.0,
+      "on_target_rate": 0.3,
+      "crash_rate": 0.0,
+      "battery_fail_rate": 0.06666666666666667,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 20.355555555555554,
+      "mean_steps": 119.66666666666667
+    },
+    "unseen": {
+      "mean_return": 172.76299151684307,
+      "std_return": 83.58743744657848,
+      "success_rate": 0.7,
+      "delivery_rate": 1.0,
+      "on_target_rate": 0.5,
+      "crash_rate": 0.03333333333333333,
+      "battery_fail_rate": 0.26666666666666666,
+      "timeout_rate": 0.0,
+      "mean_delivery_min": 24.322222222222226,
+      "mean_steps": 137.96666666666667
+    },
+    "wall_minutes": 16.6
+  }
+]

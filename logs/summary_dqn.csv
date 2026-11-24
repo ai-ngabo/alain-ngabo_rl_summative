@@ -1,0 +1,13 @@
+Run,Learning rate,Gamma,Replay buffer,Batch size,Exploration,Target update,Double DQN,Network,Mean reward,Success %,On-target %,Unseen reward,Unseen success %,Last-100 train reward,Episodes to converge,Train episodes,Minutes
+dqn_01_baseline,0.0005,0.99,100000,128,e-greedy 1.0->0.05 over 100k,hard every 1000,True,128x128,126.6,70,17,104.5,53,95.8,1061,2492,10.8
+dqn_02_lr1e-3,0.001,0.99,100000,128,e-greedy 1.0->0.05 over 100k,hard every 1000,True,128x128,149.5,57,63,118.9,40,107.4,976,2400,10.5
+dqn_03_lr1e-4,0.0001,0.99,100000,128,e-greedy 1.0->0.05 over 100k,hard every 1000,True,128x128,70.1,53,0,26.2,33,63.2,588,2199,10.4
+dqn_04_gamma0.95,0.0005,0.95,100000,128,e-greedy 1.0->0.05 over 100k,hard every 1000,True,128x128,143.1,60,40,111.5,43,125.9,1885,2591,11.3
+dqn_05_batch32,0.0005,0.99,100000,32,e-greedy 1.0->0.05 over 100k,hard every 1000,True,128x128,62.3,50,3,49.0,43,53.9,1398,2364,9.2
+dqn_06_buffer10k,0.0005,0.99,10000,128,e-greedy 1.0->0.05 over 100k,hard every 1000,True,128x128,165.7,57,80,148.9,43,148.7,1465,2559,9.8
+dqn_07_eps_fast30k,0.0005,0.99,100000,128,e-greedy 1.0->0.05 over 30k,hard every 1000,True,128x128,129.3,67,27,131.1,63,114.0,1051,2595,12.1
+dqn_08_eps_slow200k,0.0005,0.99,100000,128,e-greedy 1.0->0.1 over 200k,hard every 1000,True,128x128,173.4,60,73,147.5,43,142.3,1949,2302,10.2
+dqn_09_target_hard200,0.0005,0.99,100000,128,e-greedy 1.0->0.05 over 100k,hard every 200,True,128x128,150.2,53,67,122.5,47,111.2,1783,2432,10.2
+dqn_10_target_soft,0.0005,0.99,100000,128,e-greedy 1.0->0.05 over 100k,soft tau=0.005,True,128x128,160.7,73,40,167.6,73,124.2,1782,2394,11.6
+dqn_11_no_double,0.0005,0.99,100000,128,e-greedy 1.0->0.05 over 100k,hard every 1000,False,128x128,127.2,60,57,110.6,47,127.5,1787,2623,9.6
+dqn_12_net256,0.0003,0.99,100000,128,e-greedy 1.0->0.05 over 100k,hard every 1000,True,256x256,142.4,57,43,155.4,50,128.8,1459,2444,11.6

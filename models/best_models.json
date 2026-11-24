@@ -1,0 +1,41 @@
+{
+  "overall": "ppo",
+  "algorithms": {
+    "dqn": {
+      "run": "final_dqn_08_eps_slow200k",
+      "model_path": "models/dqn/final_dqn_08_eps_slow200k.pt",
+      "frames": 1000000,
+      "train_mean_reward": 215.80977601906275,
+      "train_success": 0.7,
+      "unseen_mean_reward": 200.0792534403996,
+      "unseen_success": 0.6333333333333333
+    },
+    "reinforce": {
+      "run": "final_reinforce_06_gamma0.95",
+      "model_path": "models/pg/reinforce/final_reinforce_06_gamma0.95.pt",
+      "frames": 1000000,
+      "train_mean_reward": 194.83136450843807,
+      "train_success": 0.9333333333333333,
+      "unseen_mean_reward": 203.78794153557638,
+      "unseen_success": 0.8333333333333334
+    },
+    "ppo": {
+      "run": "final_ppo_12_entropy0.05",
+      "model_path": "models/pg/ppo/final_ppo_12_entropy0.05.pt",
+      "frames": 1000000,
+      "train_mean_reward": 249.57371426788256,
+      "train_success": 1.0,
+      "unseen_mean_reward": 224.87070448348678,
+      "unseen_success": 0.8333333333333334
+    },
+    "a2c": {
+      "run": "final_a2c_11_critic1.0",
+      "model_path": "models/pg/a2c/final_a2c_11_critic1.0.pt",
+      "frames": 1000000,
+      "train_mean_reward": 193.41467490047145,
+      "train_success": 0.9333333333333333,
+      "unseen_mean_reward": 172.76299151684307,
+      "unseen_success": 0.7
+    }
+  }
+}

@@ -3,7 +3,8 @@
 * `LiveViewer` - a small FastAPI server that serves the three.js 3D viewer (assets/viewer)
   and streams every environment step to the browser over a WebSocket. The same server
   exposes `POST /api/act` (observation in, action out): the integration path a dispatch
-  dashboard or mobile app would use.
+  dashboard or mobile app would use. `GET /api/act` explains how to call it and `/docs`
+  is the interactive API page.
 * `build_terrain_texture` - paints the Rwandan landscape (fields, terraces, tea, roads,
   Lake Muhazi, Kigali, the airport) into one image used by the 3D terrain.
 * `topdown_rgb` - a 2D top-down picture of an episode (Gymnasium "rgb_array" mode).
@@ -18,7 +19,7 @@ import time
 from pathlib import Path
 
 import numpy as np
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import Body, FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -33,7 +34,7 @@ VIEWER_DIR = ROOT / "assets" / "viewer"
 TEXTURE_PATH = VIEWER_DIR / "terrain_texture.jpg"
 
 
-# terrain texture
+# ====================================================================== terrain texture
 def _hex(c: str) -> np.ndarray:
     return np.array([int(c[i:i + 2], 16) for i in (1, 3, 5)], dtype=np.float32)
 
@@ -73,12 +74,12 @@ def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: in
     n_mid = _value_noise((height, width), (90, 115), rng)
     n_fine = rng.random((height, width), dtype=np.float32)
 
-    # base vegetation by altitude
+    # ---- base vegetation by altitude
     low, mid, high = _hex("#6f9e3d"), _hex("#5c8f34"), _hex("#44752b")
     t = np.clip((H - 1300) / 700, 0, 1)[..., None]
     img = np.where(t < 0.5, low + (mid - low) * (t * 2), mid + (high - mid) * ((t - 0.5) * 2))
 
-    # patchwork of farm plots: jittered cells with darker hedge lines
+    # ---- patchwork of farm plots: jittered Voronoi cells with darker hedge lines
     cell = 0.22  # km
     pts_rng = np.random.default_rng(seed + 1)
     ncx = int((x1 - x0) / cell) + 3
@@ -115,18 +116,18 @@ def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: in
     farmland = np.clip(1.5 - slope * 5, 0.55, 1.0)[..., None] * np.clip((n_big[..., None] - 0.08) * 6, 0, 1)
     img = img * (1 - 0.7 * farmland) + plots * (0.7 * farmland)
 
-    # terraces: contour stripes on hillsides
+    # ---- terraces: contour stripes on hillsides
     stripes = (np.mod(H / 7.0 + n_mid * 0.5, 1.0) < 0.5).astype(np.float32)
     terr = np.clip((slope - 0.03) * 12, 0, 1) * (n_big > 0.25)
     img *= (1.0 - 0.12 * terr * stripes)[..., None]
 
-    # eucalyptus woods and banana groves on some hill tops
+    # ---- eucalyptus woods and banana groves on some hill tops
     n_wood = _value_noise((height, width), (34, 44), rng)
     hilltop = np.clip((n_wood - 0.74) * 6, 0, 1) * np.clip((H - 1550) / 250, 0, 1)
     woods = _hex("#3d6a2e") * (0.8 + 0.4 * (n_fine[..., None] > 0.5))
     img = img * (1 - hilltop[..., None] * 0.7) + woods * (hilltop[..., None] * 0.7)
 
-    # tea estates (bright green rows)
+    # ---- tea estates (bright green rows)
     s = settlements()
     for t_ in s["tea"]:
         d = np.hypot(X - t_["xy"][0], Y - t_["xy"][1])
@@ -135,7 +136,7 @@ def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: in
         tea = _hex("#3fae3a") * (0.85 + 0.15 * rows)[..., None]
         img = img * (1 - w[..., None]) + tea * w[..., None]
 
-    # valleys along the Nyabarongo
+    # ---- valley marshes along the Nyabarongo
     river = np.array(NYABARONGO)
     dr = np.full(X.shape, np.inf, dtype=np.float32)
     for (ax, ay), (bx, by) in zip(river[:-1], river[1:]):
@@ -147,7 +148,7 @@ def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: in
     riverline = np.clip((0.12 - dr) / 0.06, 0, 1)
     img = img * (1 - riverline[..., None]) + _hex("#5a7f86") * riverline[..., None]
 
-    # Kigali: light earthy urban ground with trees (3D buildings on top)
+    # ---- Kigali: light earthy urban ground with trees (3D buildings sit on top)
     urban = np.zeros(X.shape, dtype=np.float32)
     for k in s["kigali"]:
         d = np.hypot(X - k["xy"][0], Y - k["xy"][1])
@@ -158,19 +159,19 @@ def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: in
     ground = ground * (1 - trees) + _hex("#4a7a33") * trees
     img = img * (1 - urban[..., None] * 0.8) + ground * (urban[..., None] * 0.8)
 
-    # Lake Muhazi
+    # ---- Lake Muhazi
     dl = terrain._lake_distance(X.astype(np.float64), Y.astype(np.float64)).astype(np.float32)
     water = np.clip((LAKE_HALF_WIDTH_KM + 0.05 - dl) / 0.1, 0, 1)
     shore = np.clip((LAKE_HALF_WIDTH_KM + 0.35 - dl) / 0.3, 0, 1) * (1 - water)
     img = img * (1 - shore[..., None] * 0.5) + _hex("#8db36a") * (shore[..., None] * 0.5)
     img = img * (1 - water[..., None]) + (_hex("#2f6283") + n_mid[..., None] * 18) * water[..., None]
 
-    # soft hill shading (sun from the north-east) and grain
+    # ---- soft hill shading (sun from the north-east) and grain
     shade = np.clip(1.0 + (-gx * 0.6 - gy * 0.8) * 1.6, 0.8, 1.15)
     img *= (shade * (0.94 + 0.1 * n_big + 0.04 * (n_fine - 0.5)))[..., None]
     pil = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8))
 
-    # roads and the airport (vector drawing)
+    # ---- roads and the airport (vector drawing)
     draw = ImageDraw.Draw(pil)
 
     def px(p):
@@ -211,7 +212,7 @@ def build_terrain_texture(path: Path = TEXTURE_PATH, width: int = 4096, seed: in
     return path
 
 
-# 2D top-down image
+# ====================================================================== 2D top-down image
 def topdown_rgb(env, size: int = 900) -> np.ndarray:
     """Top-down map of the current episode as an RGB array."""
     import matplotlib
@@ -253,7 +254,7 @@ def topdown_rgb(env, size: int = 900) -> np.ndarray:
     return img
 
 
-# live 3D viewer
+# ====================================================================== live 3D viewer
 class ActRequest(BaseModel):
     """Body of POST /api/act: the 27 observation values in environment order."""
     observation: list[float]
@@ -265,7 +266,7 @@ class LiveViewer:
     def __init__(self, host: str = "127.0.0.1", port: int = 8765, policy=None):
         import uvicorn
 
-        from .custom_env import ACTIONS, OBS_DIM
+        from .custom_env import ACTIONS, OBS_DIM, IbabaDroneEnv
 
         if not TEXTURE_PATH.exists():
             build_terrain_texture()
@@ -279,7 +280,13 @@ class LiveViewer:
         scene.update(settlements())
         self.scene = scene
 
-        app = FastAPI(title="Ibaba Life-saver drone API")
+        app = FastAPI(
+            title="Ibaba Life-saver drone API",
+            description="POST /api/act with the 27 observation values to get the trained agent's next action.",
+        )
+        example_obs = [round(float(v), 4) for v in IbabaDroneEnv().reset(seed=0)[0]]
+        act_examples = {"launch": {"summary": "Drone just launched from the Kigali hub",
+                                   "value": {"observation": example_obs}}}
 
         @app.get("/api/health")
         def health():
@@ -289,8 +296,20 @@ class LiveViewer:
         def get_scene():
             return JSONResponse(self.scene)
 
+        @app.get("/api/act")
+        def act_help():
+            """Opening /api/act in a browser sends GET, so explain how to call it."""
+            return {
+                "how_to_use": 'Send a POST request to /api/act with the JSON body {"observation": [27 numbers]}.',
+                "try_it": "Open /docs, choose POST /api/act, click 'Try it out', then 'Execute'.",
+                "observation_size": OBS_DIM,
+                "actions": {i: name for i, name in enumerate(ACTIONS)},
+                "example_body": {"observation": example_obs},
+                "policy_loaded": self.policy is not None,
+            }
+
         @app.post("/api/act")
-        def act(req: ActRequest):
+        def act(req: ActRequest = Body(openapi_examples=act_examples)):
             import torch
             if self.policy is None:
                 return JSONResponse({"error": "no policy loaded"}, status_code=503)

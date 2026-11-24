@@ -1,0 +1,18 @@
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:255: FutureWarning: The env passed to Collector is missing transforms required by the policy (InitTracker). From torchrl v0.16 the collector will append them automatically. To enable that behavior now (and silence this warning), pass `auto_register_policy_transforms=True`. To opt out permanently, pass `auto_register_policy_transforms=False`.
+  return super().__call__(*args, **kwargs)
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1279: UserWarning: total_frames (250000) is not exactly divisible by frames_per_batch (64). This means 48 additional frames will be collected.To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+C:\Users\speci\practice\alain-ngabo_rl_summative\.venv\Lib\site-packages\torchrl\collectors\_single.py:1300: UserWarning: init_random_frames (5000) is not exactly a multiple of frames_per_batch (64),  this results in more init_random_frames than requested (5056).To silence this message, set the environment variable RL_WARNINGS to False.
+  warnings.warn(
+[92m2026-11-19 22:31:43,069 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([100000]) shape[92m [END][0m
+[dqn:dqn_10_target_soft] frames=  25024 eps=  183 epsilon=0.76 eval_return=   -9.6 success=0.40
+[dqn:dqn_10_target_soft] frames=  50048 eps=  370 epsilon=0.53 eval_return=   24.8 success=0.30
+[dqn:dqn_10_target_soft] frames=  75008 eps=  581 epsilon=0.29 eval_return=  -33.9 success=0.30
+[dqn:dqn_10_target_soft] frames= 100032 eps=  811 epsilon=0.05 eval_return=   28.6 success=0.50
+[dqn:dqn_10_target_soft] frames= 125056 eps= 1066 epsilon=0.05 eval_return=   -7.9 success=0.40
+[dqn:dqn_10_target_soft] frames= 150016 eps= 1333 epsilon=0.05 eval_return=   27.3 success=0.30
+[dqn:dqn_10_target_soft] frames= 175040 eps= 1595 epsilon=0.05 eval_return=   35.0 success=0.30
+[dqn:dqn_10_target_soft] frames= 200000 eps= 1860 epsilon=0.05 eval_return=   63.0 success=0.40
+[dqn:dqn_10_target_soft] frames= 225024 eps= 2117 epsilon=0.05 eval_return=   76.9 success=0.40
+[dqn:dqn_10_target_soft] frames= 250048 eps= 2394 epsilon=0.05 eval_return=  128.1 success=0.50
+[dqn:dqn_10_target_soft] FINAL train=160.7 (success 0.73)  held-out=167.6 (success 0.73)  -> dqn_10_target_soft.json
